@@ -1,0 +1,10 @@
+[
+	{
+		"Name": "NPC1",
+		"Level": "9",
+		"Install": "apt",
+		"Owner": "SPI",
+		"Kernel": "4.9"
+	}
+
+]
