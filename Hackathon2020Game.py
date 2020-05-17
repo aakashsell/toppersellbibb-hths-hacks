@@ -1,4 +1,5 @@
 from nltk.corpus import wordnet
+<<<<<<< HEAD
 from bs4 import BeautifulSoup as bs
 import urllib.request
 import random
@@ -81,10 +82,23 @@ elif timePeriod == "1980s":
     itemList.append(Item("wad of cash","a wad of cash",3,25))
     itemList.append(Item("tape","a used roll of Scotch tape",4,0))
     itemList.append(Item("key","an unlabeled key",2,0))
+=======
+from bs4 import BeautifulSoup
+import json
+'''
+This is a text based adventure game that uses the Natural Language Toolkit for Python 
+by comparing human inputs and the synonyms of a list of commands. 
+'''
+class Item:
+    def __init__(self,name,description):
+        self.name=name
+        self.description=description
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
 
 
 
 class Room:
+<<<<<<< HEAD
     def __init__(self):
         self.exits={}
         self.items=[]
@@ -98,12 +112,25 @@ class Room:
     def addExit(self,room,requiresKey,direction):
         self.exits[direction]=room
         self.requiresKey[direction]=requiresKey
+=======
+    def __init__(self,description):
+        self.description=description
+        self.exits={}
+        self.items=[]
+
+    def addExit(self,room,direction):
+        self.exits[direction]=room
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
 
     def getExit(self,direction):
         return self.exits[direction]
 
     def fullDescription(self):
+<<<<<<< HEAD
         returnStr="You are "+self.description+"\nExits are:\n   "
+=======
+        returnStr="You are "+self.description+".\nExits are:\n   "
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
         x=0
         for key in self.exits:
             returnStr+=key
@@ -118,6 +145,7 @@ class Room:
         if len(self.items)>0:
             returnStr+="In the room, you can see:\n"
             for item in self.items:
+<<<<<<< HEAD
                 returnStr+="   "+item.description+"\n"
         if len(self.npcs)>0:
             if len(self.npcs)>1:
@@ -133,16 +161,30 @@ class Room:
     def addNPC(self,npc):
         self.npcs.append(npc)
 
+=======
+                returnStr+="   "+item.name+"\n"
+        return returnStr
+        
+    def addItem(self,item):
+        self.items.append(item)
+
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
 
 
 class Player:
     def __init__(self):
+<<<<<<< HEAD
         self.inventory=[]
         self.hp=100
         self.hpMax=self.hp
         self.equipped=Item("fists","fists. That's just about as simple as you can get",0,5)
         self.previousRoom=None
         
+=======
+        self.currentRoom = None
+        self.inventory = []
+
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
     def setCurrentRoom(self,currentRoom):
         self.currentRoom=currentRoom
 
@@ -152,6 +194,7 @@ class Player:
             printStr = "Go Where? \n"
         else:
             try:
+<<<<<<< HEAD
                 if self.currentRoom.requiresKey[direction]:
                     keyFound=False
                     for item in self.inventory:
@@ -176,6 +219,11 @@ class Player:
                     nextRoom = self.currentRoom.getExit(direction.lower())
                     self.currentRoom=nextRoom
                     printStr=self.currentRoom.fullDescription()
+=======
+                nextRoom = self.currentRoom.getExit(direction)
+                self.currentRoom=nextRoom
+                printStr=self.currentRoom.fullDescription() 
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
             except:
                 printStr="There is no room."
         return printStr
@@ -186,6 +234,7 @@ class Player:
         else:
             for value in self.currentRoom.items:
                 itemToTake = self.currentRoom.items[self.currentRoom.items.index(value)]
+<<<<<<< HEAD
                 if itemToTake.name.lower().split() == command.wordList.lower():
                     self.inventory.append(itemToTake)
                     self.currentRoom.items.remove(itemToTake)
@@ -202,6 +251,24 @@ class Player:
                     self.inventory.remove(itemToDrop)
                     self.currentRoom.items.append(itemToDrop)
                     return "you have dropped the " + itemToDrop.name
+=======
+                if itemToTake.name.split() == command.wordList:
+                    self.inventory.append(itemToTake)
+                    self.currentRoom.items.remove(itemToTake)
+                    return "you have taken " + itemToTake.name
+            return "This item does not exist."
+
+    def drop(self,item):
+        if command.wordList[0]==None:
+                return "Take what?"
+        else:
+            for value in self.currentRoom.items:
+                itemToDrop = self.inventory[self.inventory.index(value)]
+                if itemToDrop.name.split() == command.wordList:
+                    self.inventory.remove(itemToDrop)
+                    self.currentRoom.items.append(itemToDrop)
+                    return "you have dropped " + itemToDrop.name
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
             return "This item is not in your inventory."
 
     def getInventory(self,command):
@@ -213,6 +280,7 @@ class Player:
             printStr="There is nothing in your inventory."
         return printStr
 
+<<<<<<< HEAD
     def takeDamage(self,damage):
         self.hp-=damage
             
@@ -253,6 +321,8 @@ class Player:
             return "This item is not in your inventory."
     
 
+=======
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
 
 
 class Command:
@@ -269,7 +339,11 @@ class Command:
         
 
 class CommandWords:
+<<<<<<< HEAD
     validCommands=["quit","look","go","take","drop","inventory","talk","inspect","use","equip"]
+=======
+    validCommands=["quit","look","go","take","drop","inventory","attack","talk","inspect","use"]
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
     allSynonyms={}
     for value in validCommands:
         allSynonyms[value]=[]
@@ -294,6 +368,7 @@ class Parser:
     def getCommand(self):
         user = input("> ")
         wordList = user.split()
+<<<<<<< HEAD
         try:
             if self.commands.checkCommand(wordList[0]):
                 return Command(wordList)
@@ -389,10 +464,19 @@ def randomNPC():
         repeatLinePossibilities = ["Hello again, traveler.","Hello again, stranger.","I still don't entirely trust you.","Now stay on your best behavior.","Now I'm not sure I can believe anything you say."]
     line = random.randint(0,4)
     return NPC.NPC(timePeriod,linePossibilities[line],repeatLinePossibilities[line],health,itemList[weapon],isEnemy,False)
+=======
+        if self.commands.checkCommand(wordList[0]):
+            return Command(wordList)
+        else:
+            return Command[None, None]
+
+
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
 
 player=Player()
 parser=Parser()
 def createRooms():
+<<<<<<< HEAD
     centerRoom=Room()
     southRoom=Room()
     northRoom=Room()
@@ -509,11 +593,40 @@ def interact(command):
                 npc.repeat = True
                 return npc.name+" says to you,\n\""+line+"\""
         return "There is no "+" ".join(command.wordList).title()+" here."
+=======
+    westRoom=Room("in a room to the west")
+    eastRoom=Room("in a room to the east")
+    northRoom=Room("in a room to the north")
+    southRoom=Room("in a room to the south")
+    centerRoom=Room("in a room in the center")
+    centerRoom.addExit(westRoom,"west")
+    centerRoom.addExit(eastRoom,"east")
+    centerRoom.addExit(northRoom,"north")
+    centerRoom.addExit(southRoom,"south")
+    westRoom.addExit(centerRoom,"east")
+    eastRoom.addExit(centerRoom,"west")
+    northRoom.addExit(centerRoom,"south")
+    southRoom.addExit(centerRoom,"north")
+    southRoom.addItem(Item("funny word","it is the funnee word"))
+    player.setCurrentRoom(centerRoom)
+
+def play():
+    print(player.currentRoom.fullDescription())
+    finished = False
+    while finished == False:
+        command = parser.getCommand()
+        finished = processCommand(command)
+    print("bye bye")
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
 
 def processCommand(command):
     wantToQuit=False
     if command.isUnknown():
+<<<<<<< HEAD
         print("That command is unknown.")
+=======
+        print("What.")
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
         return False
     commandWord=command.commandWord
     if commandWord in CommandWords.allSynonyms["go"]:
@@ -526,6 +639,7 @@ def processCommand(command):
         print(player.take(command))
     elif commandWord in CommandWords.allSynonyms["inventory"]:
         print(player.getInventory(command))
+<<<<<<< HEAD
     elif commandWord in CommandWords.allSynonyms["drop"]:
         print(player.drop(command))
     elif commandWord in CommandWords.allSynonyms["talk"]:
@@ -539,6 +653,10 @@ def processCommand(command):
     return wantToQuit
 
 
+=======
+    return wantToQuit
+
+>>>>>>> 9f9f831216612b85fe65eb2606ccd11a3ceef65b
 def quit(command):
     if command.wordList[1:]!=None:
         print("Quit what?")
